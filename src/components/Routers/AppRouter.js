@@ -6,6 +6,7 @@ import Register from '../Auth/Register';
 import Login from '../Auth/Login';
 import AddEmployee from '../Employee/AddEmployee';
 import ViewEmployees from '../Employee/ViewEmployees';
+import EmployeeProfile from '../Employee/EmployeeProfile';
 
 const AppRouter = () => {
     return (
@@ -19,6 +20,8 @@ const AppRouter = () => {
             <Route path="/signin" element={<Login />} />
             <Route path="/add_employee" element={<AddEmployee />} />
             <Route path="/employees" element={<ViewEmployees />} />
+            <Route path="/employees/:id" element={<EmployeeProfile />} />
+
 
 
 

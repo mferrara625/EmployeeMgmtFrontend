@@ -6,25 +6,28 @@ import RegSplash from "../../assets/regSplash.jpg";
 import { AuthContext } from "../Providers/AuthProvider";
 import { apiHostUrl } from "../../config";
 import BorderCard from "../common/BorderCard";
-import { useNavigate } from "react-router-dom";
-import Employee from "./Employee";
+import { useNavigate, useParams } from "react-router-dom";
 
-const ViewEmployees = (props) => {
+const EmployeeProfile = (props) => {
 
     const [auth] = useContext(AuthContext);
-    const navigate = useNavigate();
+    const params = useParams();
+    const [employee, setEmployee] = useState({
+        id: params.id
+    })
 
     const [data, setData] = useState([])
     useEffect(() => {
         const fetchData = async () =>{
+            console.log("test 1: " + params.id);
         try{
-            const {data: response} = await axios.get(`${apiHostUrl}/employees`, {
+            const {data: response} = await axios.get(`${apiHostUrl}/employees/${employee.id}`, {
                 headers : {
                 Authorization: `Bearer ${auth.token}`
             }
         });
             setData(response);
-            console.log(response);
+            console.log("res" + data.id);
             
         } catch (error) {
             console.error(error.message);
@@ -33,36 +36,20 @@ const ViewEmployees = (props) => {
         fetchData();
     }, []);
 
-    const displayEmployees = () => {
-        console.log(data);
-
-        return data.map(dat => {
-            console.log(dat.id);
-            return <Employee employee = {dat} key = {dat.id} onSelect={onSelect}/>
-        })
-
-    }
-
-    const onSelect = (id) => {
-        navigate(`/employees/${id}`);
-    }
-
     return (
         <Container>
             <Splash image={RegSplash} style={{
                 height: "20vh",
                 color: "#F1F1F1",
                 textShadow: '1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000'}}>
-            <h1>Employees</h1>
+            <h1>Employee Profile</h1>
             </Splash>
-            { data == null ?
-                <p>LOADING...</p>
-                :
-                displayEmployees()
-            }
+            <BorderCard> <b>First:</b> &nbsp;{data.firstName} &nbsp;&nbsp; <b>Last:</b> &nbsp;{data.lastName} &nbsp;&nbsp; <b>Department:</b> &nbsp;{data.department} &nbsp;&nbsp; <b>Salary:</b> &nbsp;${data.salary} </BorderCard>
+      
+          
         </Container>
     )
 
 }
 
-export default ViewEmployees;
+export default EmployeeProfile;

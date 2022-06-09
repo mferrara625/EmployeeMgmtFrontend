@@ -27,13 +27,11 @@ const AddEmployee = (props) => {
     }
 
     const onSubmit = () => {
-        console.log("Auth test:" + auth.token);
         const data = newEmployee;
         createNewEmployee(data);
     };
 
     const createNewEmployee = async (data) => {
-        console.log("Test 2");
         try{
             const res = await axios.post(`${apiHostUrl}/employees`, data, {
                 headers : {
